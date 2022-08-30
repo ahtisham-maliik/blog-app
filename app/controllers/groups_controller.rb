@@ -5,11 +5,9 @@ class GroupsController < ApplicationController
     @groups = current_user.groups.all
   end
 
-  def show
-  end
+  def show;end
 
-  def edit
-  end
+  def edit;end
 
   def new
     @group = current_user.groups.new
@@ -19,35 +17,37 @@ class GroupsController < ApplicationController
     @group = current_user.groups.new(group_params)
 
     if @group.save
-      flash[:notice] = "Group has been created successfully."
-      redirect_to groups_path
+      redirect_to groups_path, notice: "Group was created successfully."
     else
+      flash[:alert] = @group.errors.full_messages.to_sentence
       render 'new'
     end
   end
 
   def update
     if @group.update(group_params)
-      flash[:notice] = "Group was updated"
+      flash[:notice] = "Group was updated successfully"
       redirect_to group_path(@group)
     else
-      flash[:notice] = "Group was not updated"
+      flash[:alert] = @group.errors.full_messages.to_sentence
       render 'edit'
     end
   end
 
   def destroy
-    @group.destroy
-    flash[:notice] = "Group has been deleted successfully."
-    redirect_to groups_path
+    if @group.destroy
+      redirect_to groups_path, notice: "Group was deleted successfully."
+    else
+      redirect_to groups_path, alert: @group.errors.full_messages.to_sentence
+    end
   end
 
   private
+
   def group_params
     params.require(:group).permit(:name).merge({ user_ids: [current_user.id] })
   end
 
-  private
   def set_article
     @group = current_user.groups.find(params[:id])
   end

@@ -5,7 +5,6 @@ class CreateGroups < ActiveRecord::Migration[7.0]
       t.string :created_by
       t.string :member
 
-
       t.timestamps
     end
   end
