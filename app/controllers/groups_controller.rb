@@ -1,8 +1,8 @@
 class GroupsController < ApplicationController
-  before_action :set_article, only: [:edit, :update, :show, :destroy]
+  before_action :set_group, only: [:edit, :update, :show, :destroy, :leave_group, :join_group]
 
   def index
-    @groups = current_user.groups.all
+    @groups = Group.all
   end
 
   def show;end
@@ -14,9 +14,10 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = current_user.groups.new(group_params)
+    @group = current_user.groups.build(group_params)
 
     if @group.save
+      @group.user_groups.create(user_id: current_user.id)
       redirect_to groups_path, notice: "Group was created successfully."
     else
       flash[:alert] = @group.errors.full_messages.to_sentence
@@ -42,13 +43,23 @@ class GroupsController < ApplicationController
     end
   end
 
+  def join_group
+    @group.user_groups.create(user_id: current_user.id)
+    redirect_to groups_index_path, notice: "Group joined successfully."
+  end
+
+  def leave_group
+    @group.user_groups.find_by(user_id: params[:user_id]).destroy
+    redirect_to groups_index_path, notice: "Group left successfully."
+  end
+
   private
 
   def group_params
-    params.require(:group).permit(:name).merge({ user_ids: [current_user.id] })
+    params.require(:group).permit(:name).merge({ creator_id: current_user.id })
   end
 
-  def set_article
-    @group = current_user.groups.find(params[:id])
+  def set_group
+    @group = Group.find_by(id: params[:id])
   end
 end
