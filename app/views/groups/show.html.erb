@@ -1,3 +1,32 @@
-<h3><%= @group.name %></h3>
-<%= link_to "Edit", edit_group_path(@group) %>
-<%= link_to 'Back', groups_path %>
+<div class="container px-4 my-auto">
+  <div class="row gx-5">
+    <div class="col">
+      <h2><%= @group.name %></h2>
+      <div class="container overflow-hidden my-auto">
+        <%= render partial: 'shared/post_form', locals: { path: group_posts_path(@group) } %>
+      </div>
+
+      <div class="my-auto">
+        <h3>All Posts</h3>
+        <% if @group.posts.present? %>
+          <% @group.posts.each do |post| %>
+            <div class="container p-3 my-3 border">
+              <div class="form-group mb-2"><h5><%= post.title %></h5></div>
+              <div class="form-group"><%= post.description %></div>
+              <%= link_to 'Edit', edit_group_post_path(@group, post) %>
+              <%= link_to "Delete", group_post_path(@group, post), data: { turbo_method: :delete , turbo_confirm: "Are you sure?" } %>
+            </div>
+          <% end %>
+        <% else %>
+          <h3>No posts to display</h3>
+        <% end %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="p-3 border bg-light">Members</div>
+      <% @group.users.each do |user| %>
+        <div class="form-group my-auto mx-auto"><h5>user.name</h5></div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="container my-auto">
+  <%= form_for(:post, url: path, html: { data: { turbo: false } }) do |f| %>
+    <div class="form-group">
+      <%= f.label :title %><br>
+      <%= f.text_field :title %>
+    </div><br>
+
+    <div class="form-group">
+      <%= f.label :description %><br>
+      <%= f.text_area :description %>
+    </div>
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</div>
