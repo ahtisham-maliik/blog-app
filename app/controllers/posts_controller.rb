@@ -1,18 +1,14 @@
 class PostsController < ApplicationController
-
   before_action :set_group
   before_action :set_post, only: [:create, :edit, :show, :update, :destroy]
-
 
   def index
     @posts = @group.posts.all
   end
 
-  def show
-  end
+  def show;end
 
-  def edit
-  end
+  def edit;end
 
   def new
     @post = @group.posts.new
@@ -61,4 +57,3 @@ class PostsController < ApplicationController
     @post = @group.posts.find_by(id: params[:id])
   end
 end
-

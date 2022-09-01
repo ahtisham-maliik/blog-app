@@ -19,13 +19,9 @@
         <td><%= link_to 'Edit', edit_group_path(group) %></td>
         <td><%= link_to "Delete", group_path(group), data: { turbo_method: :delete , turbo_confirm: "Are you sure?"} %></td>
         <% if group.creator != current_user || !group.users.include?(current_user) %>
-          <td>
-            <%= link_to 'Join', join_groups_path(group) %>
-          </td>
+          <td><%= link_to 'Join', join_groups_path(group) %></td>
         <% else %>
-          <td>
-            <%= link_to 'Leave', leave_groups_path(group, current_user.id) %>
-          </td>
+          <td><%= link_to 'Leave', leave_groups_path(group, current_user.id) %></td>
         <% end %>
       </tr>
     <% end %>
