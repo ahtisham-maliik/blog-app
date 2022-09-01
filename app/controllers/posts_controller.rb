@@ -27,8 +27,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      flash[:notice] = "Post was updated successfully"
-      redirect_to group_path(@group)
+      redirect_to group_path(@group), notice: "Post was updated successfully"
     else
       flash[:alert] = @post.errors.full_messages.to_sentence
       render 'edit'
