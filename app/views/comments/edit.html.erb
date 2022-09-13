@@ -1,0 +1,9 @@
+<%= form_for [@group, @post, @comment], html: {data: {turbo: false}} do |f| %>
+  <p>
+    <%= f.label :body %><br>
+    <%= f.text_area :body, placeholder: "Edit Reply" %><br/>
+  </p>
+
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to 'Back', groups_path, class: "btn btn-primary" %>
+<% end %>

@@ -7,4 +7,6 @@ class Group < ApplicationRecord
 
   validates :name, length: { minimum: 10, maximum: 100 }, presence: true
 
+  scope :created_by_me, lambda { |user| where(creator_id: user.id)}
+  scope :where_i_am_member, lambda { |user| joins(:user_groups).where('user_groups.user_id = :user', user: user.id)}
 end

@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:create, :edit, :show, :update, :destroy]
 
   def index
-    @posts = @group.posts.all
+    @posts = @group.posts
   end
 
   def show;end
@@ -20,8 +20,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to group_path(@group), notice: "Post was created successfully."
     else
-      flash[:alert] = @post.errors.full_messages.to_sentence
-      render 'new'
+      redirect_to group_path(@group), alert: @post.errors.full_messages.to_sentence
     end
   end
 
@@ -45,7 +44,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :description, :group_id).merge({user_id: current_user.id, group_id: @group.id})
+    params.require(:post).permit(:title, :description, :group_id, :image).merge({user_id: current_user.id, group_id: @group.id})
   end
 
   def set_group

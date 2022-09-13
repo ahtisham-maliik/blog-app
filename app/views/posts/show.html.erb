@@ -1,0 +1,36 @@
+<div class="mt-2 align-group-title">
+  <div class="form-group mb-2"><h5><%= @post.title %></h5></div>
+  <% if @post.image.attached? %>
+    <%= image_tag @post.image, class:"center mb-4" %>
+  <% end %>
+  <div class="form-group"><%= @post.description %></div>
+  <div class="row mt-2", style="width:80%;">
+    <% if policy(@post).post_creator? %>
+      <div class="col-1">
+        <%= link_to 'Edit', edit_group_post_path(@group, @post), class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+    <% if (policy(@post).post_creator?) or policy(@post).group_creator? %>
+      <div class="col-2">
+        <%= link_to "Delete", group_post_path(@group, @post), class: 'btn btn-primary', data: { turbo_method: :delete , turbo_confirm: "Are you sure?" } %>
+      </div>
+    <% end %>
+    <div class="col-4 mt-3"><p><small><%= @post.user.full_name %> created <%= time_ago_in_words(@post.updated_at) %> ago</small></p></div>
+  </div><br>
+
+  <div class="container">
+    <h3>Comments</h3>
+
+    <%= form_for([@group, @post, Comment.new]) do |f| %>
+      <div class="row">
+        <div class="col-2"><%= f.text_area :body, placeholder: "  Add a comment", class:"rounded-pill", style:"height: 32px;" %></div>
+        <div class="col-3 mx-3"><%= f.submit "Add Comment",class:"rounded-pill" %></div>
+      </div>
+    <% end %>
+
+    <ul>
+      <%= render @post.comments %>
+    </ul>
+  </div>
+</div>
+

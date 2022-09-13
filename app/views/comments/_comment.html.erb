@@ -1,0 +1,29 @@
+<div class="container bg-light mb-2 pt-3">
+  <%= comment.body %><br><br>
+  <div class="row">
+    <div class="col-3">
+      <p><small><%= comment.user.full_name %> created <%= time_ago_in_words(comment.created_at) %> ago</small></p>
+    </div>
+    <div class="col-1">
+      <p><small><%= link_to "Edit", edit_group_post_comment_path(@group, @post, comment) %></small></p>
+    </div>
+    <div class="col-1">
+      <small><%= link_to "Delete", group_post_comment_path(@group, @post, comment), data: { turbo_method: :delete , turbo_confirm: "Are you sure?" } %></small>
+    </div>
+  </div>
+</div>
+<%= form_for [@group, @post, comment, Comment.new] do |f| %>
+  <div class="row", style="width:50%">
+    <div class="col-5">
+      <%= f.text_area :body, placeholder: "Add a Reply", class:"rounded-pill", style:"height: 32px;" %><br/>
+    </div>
+    <div class="col-1">
+      <%= f.submit "Reply", class:"rounded-pill" %>
+    </div>
+  </div>
+<% end %>
+<ul>
+  <%= render comment.comments %>
+</ul>
+
+

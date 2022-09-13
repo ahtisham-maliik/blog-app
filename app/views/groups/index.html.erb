@@ -1,30 +1,39 @@
-<h1>Groups</h1>
-<%= link_to "+ Create a new group ", new_group_path, class: "btn btn-primary" %>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">User</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
+<%= render 'group_filter_navbar' %>
 
-  <tbody>
-    <% @groups.each do |group| %>
-      <tr>
-        <th scope="row"><%= group.id %></th>
-        <td><%= link_to group.name, group_path(group) %></td>
-        <td><%= group.creator.email %></td>
-        <td><%= link_to 'Edit', edit_group_path(group) %></td>
-        <td><%= link_to "Delete", group_path(group), data: { turbo_method: :delete , turbo_confirm: "Are you sure?" } %></td>
-        <% if group.creator != current_user || !group.users.include?(current_user) %>
-          <td><%= link_to 'Join', join_groups_path(group) %></td>
-        <% else %>
-          <td><%= link_to 'Leave', leave_groups_path(group, current_user.id) %></td>
+<% @groups.each do |group| %>
+  <div class="container bg-light mb-2">
+    <div class="row">
+    <div class="col-10 align-group-title">
+      <div class="row", style="width:95%;">
+        <div class="col-8">
+          <h2><%= link_to group.name, group_path(group) %></h2>
+        </div>
+      </div>
+      <div class="row", style="width:100%;" >
+        <div class="col-2"><p><small><%= group.users.count %> Members</small></p></div>
+        <div class="col-2"><p><small><%= group.posts.count %> Posts</small></p></div>
+        <% if group.posts.last.present? %>
+          <div class="col-5"><p><small>Updated <%= time_ago_in_words(group.posts.last.updated_at) %> ago</small></p></div>
         <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <% if policy(group).group_creator? %>
+          <div class="col-1"><p><small><%= link_to 'Edit', edit_group_path(group) %></small></p></div>
+          <div class="col-1"><p><small><%= link_to "Delete", group_path(group), data: { turbo_method: :delete , turbo_confirm: "Are you sure?" } %></small></p></div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-2 mt-2">
+      <% if group.creator != current_user %>
+        <% if current_user.groups.pluck(:id).include?(group.id) %>
+          <%= link_to 'Leave', leave_groups_path(group, current_user.id), class: "btn btn-primary block" %>
+        <% else %>
+          <%= link_to 'Join', join_groups_path(group), class: "btn btn-primary block" %>
+        <% end %>
+      <% else %>
+        <p class="pt-3"><span>Created by you</span></p>
+      <% end %>
+    </div>
+    </div>
+  </div>
+<% end %>
+
 

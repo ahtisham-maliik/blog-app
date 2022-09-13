@@ -2,7 +2,13 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:edit, :update, :show, :destroy, :leave_group, :join_group]
 
   def index
-    @groups = Group.all
+    if params[:filter] == 'created-by-me'
+      @groups = Group.created_by_me(current_user)
+    elsif params[:filter] == 'where-i-am-member'
+      @groups = Group.where_i_am_member(current_user)
+    else
+      @groups = Group.all
+    end
   end
 
   def show;end
@@ -44,7 +50,7 @@ class GroupsController < ApplicationController
   end
 
   def join_group
-    @group.user_groups.create(user_id: current_user.id)
+    @group.user_groups.create!(user_id: current_user.id)
     redirect_to groups_index_path, notice: "Group joined successfully."
   end
 

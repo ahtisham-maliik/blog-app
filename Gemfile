@@ -13,6 +13,8 @@ gem "pg", "~> 1.1"
 
 gem "puma", "~> 5.0"
 
+gem 'image_processing' , '~> 1.2'
+
 gem "importmap-rails"
 
 gem 'bootstrap', '~> 5.1.3'
@@ -43,3 +45,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "pundit", "~> 2.2"

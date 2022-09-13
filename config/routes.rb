@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   root 'groups#index'
 
   resources :groups do
-    resources :posts
+    resources :posts do
+      resources :comments do
+        resources :comments
+      end
+    end
     get '/:id/join_group', to: 'groups#join_group', as: :join, on: :collection
     get '/:id/leave_group/:user_id', to: 'groups#leave_group', as: :leave, on: :collection
   end

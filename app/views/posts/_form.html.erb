@@ -1,14 +1,19 @@
-<div class="container">
-  <%= form_for [@group, @post], html: { data: { turbo: false } } do |f| %>
-    <div class="form-group">
-      <%= f.label :title %><br>
-      <%= f.text_field :title %>
-    </div><br>
+<div class="row align-group-and-members">
+  <div class="col-9">
+    <div class="container overflow-hidden my-auto">
+      <%= form_for [@group, @post], html: { data: { turbo: false } } do |f| %>
+        <div class="form-group">
+          <%= f.label :title %><br>
+          <%= f.text_field :title, placeholder:"Title",  style:"width: 49%;" %>
+        </div><br>
 
-    <div class="form-group">
-      <%= f.label :description %><br>
-      <%= f.text_area :description %>
+        <div class="form-group">
+          <%= f.label :description %><br>
+          <%= f.text_area :description, placeholder:"Description", style:"width: 49%;" %><br>
+          <%= f.file_field :image %>
+          <%= f.submit class: 'btn btn-primary' %>
+        </div>
+      <% end %>
     </div>
-    <%= f.submit class: 'btn btn-primary' %>
-  <% end %>
-</div><br>
+  </div>
+</div>
